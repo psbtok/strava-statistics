@@ -1,0 +1,147 @@
+* {
+  margin:0; padding:0;
+  color: white;
+}
+html{
+  font-family: 'Roboto Condensed', sans-serif;
+}
+body{
+  background-color: #030710;
+}
+#map {
+  height: 70vh;
+  width: 100vw;
+}
+.home{
+  background-color: #030710;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5em;
+}
+.intro-container{
+  text-transform: capitalize;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* padding-right: 20%; */
+}
+.home h1{
+  margin-left: 50px;
+}
+#censored{
+  letter-spacing: 6px;
+  background-color: orange;
+  text-transform: uppercase;
+  font-style: italic;
+}
+.activities{
+  margin: 50px;
+  margin-bottom: 10px;
+}
+.activities li{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-weight: 300;
+}
+.cycling-ratio, .running-ratio{
+  background: #242424;
+  width: 100%;
+  height: 40px;
+  margin-top: 10px;
+}
+.cycling-ratio-filled, .running-ratio-filled{
+  width: 2%;
+  height: 100%;
+  -webkit-transition: width 1s ease-in-out;
+  -moz-transition: width 1s ease-in-out;
+  -o-transition: width 1s ease-in-out;
+  transition: width 1s ease-in-out;}
+
+.cycling-ratio-filled{
+    background-color: #1ABA4A;
+}
+
+.running-ratio-filled{
+    background-color: #378FDC;
+}
+
+.cycling-ratio:hover .cycling-ratio-filled{
+  width: 70%;
+}
+.running-ratio:hover .running-ratio-filled{
+  width: 70%;
+}
+/* .location-data{
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+}
+.location-data h2{
+  padding-left: 50px;
+  width: 100%;
+  padding-bottom: 20px;
+} */
+.leaflet-control-container{
+  display: none;
+}
+.total-training{
+  transition-delay: .5s;
+  opacity: 0;
+  transition-duration: 1s;
+  transition-timing-function: ease-in;
+}
+.total-training{
+  display: flex;
+  font-size: 1.25em;
+  font-weight: 300;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  padding: 0 50px;
+  padding-bottom: 70px;
+}
+.total-training span{
+  font-weight: 500;
+  min-width: 30px;
+  display: inline-block;
+}
+.stats{
+  background-color: #030710;
+  height: 100vh;
+  width: 100vw;
+}
+.favorite-day{
+  padding: 50px;
+  font-size: 2.5em;
+  font-weight: 300;
+  padding-bottom: 0;
+}
+canvas{
+  width: 5%;
+  height: 5%;
+  padding-top: 30px;
+  background-color: #030710;
+  box-sizing: content-box !important;
+}
+#myChart{
+  /* width: 100% !important;
+  height: 100% !important: */
+}
+.fav-day-container{
+  width: 100%;
+  height: 56px;
+  background-color: orange;
+}
+#fav-day{
+  opacity: 0;
+  transition-duration: 1s;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  font-style: italic;
+}

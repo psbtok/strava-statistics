@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8 />
+    <title>Polylines</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="home" class="home">
+      <div class="intro-container">
+        <h1><span id="censored">classified</span><br>athlete's<br>stats</h1>
+      </div>
+      <div class="activities">
+        <h2>Main activities</h2>
+        <ul>
+          <li>
+            <span>Cycling</span>
+            <div class="cycling-ratio">
+              <div class="cycling-ratio-filled"></div>
+            </div>
+          </li>
+          <li>
+            <span>Running</span>
+            <div class="running-ratio">
+              <div class="running-ratio-filled"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="total-training">
+        <div>According to last <span id="count"> </span> sessions</div>
+        <div>You overcame <span id="distance"> </span> km</div>
+        <div>In <span id="moving_time"> </span> hours! Keep it up!</div>
+      </div>
+    </div>
+    <div id='map'></div>
+    <div class="stats">
+      <div class="favorite-day">
+        <h3>Favorite</h3>
+        <h3>Training day</h3>
+        <h3 class="fav-day-container" ><span id="fav-day"></span></h3>
+      </div>
+      <canvas id="myChart"></canvas>
+      <canvas id="test"></canvas>
+    </div>
+  </body>
+  <script src="Polyline.encoded.js"></script>
+  <script type="text/javascript" src="script.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="pie_chart.js"> </script>
+</html>

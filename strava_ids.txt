@@ -1,0 +1,19 @@
+id 3ec98f92e495ec1ada7d13fd5e63bb81cd507f28
+client_id 80748
+
+https://www.strava.com/oauth/authorize?client_id=80748&redirect_uri=http://localhost&response_type=code&scope=activity:read
+
+code 54205042e8a3bdc9b48435369c3a4557709a2e06
+
+
+https://www.strava.com/oauth/token?client_id=80748&client_secret=dd7bfd8626e77e41d351f7a76a85be61531a5ceb&code=54205042e8a3bdc9b48435369c3a4557709a2e06&grant_type=authorization_code
+
+"refresh_token": 33d2cf7c17d96d25428a3190515a237c4e19f84b
+"access_token": 36905b9c930880788c2c559f57968a2c829084cd
+
+https://www.strava.com/api/v3/athlete/activities?access_token=36905b9c930880788c2c559f57968a2c829084cd
+
+Use refresh token to get new access tokens
+
+https://www.strava.com/oauth/token?client_id=your_client_id&client_secret=your_client_secret&refresh_token=your_refresh_token_from_previous_step&grant_type=refresh_token
+https://www.strava.com/oauth/token?client_id=80748&client_secret=dd7bfd8626e77e41d351f7a76a85be61531a5ceb &refresh_token=33d2cf7c17d96d25428a3190515a237c4e19f84b&grant_type=refresh_token
