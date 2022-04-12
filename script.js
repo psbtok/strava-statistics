@@ -27,7 +27,7 @@ async function getActivities(res) {
   var total_requests = total_pages-1;
   var successful_requests = 0;
   for(var page=1; page<total_pages; page++){
-    const activities = `https://www.strava.com/api/v3/athlete/activities?access_token=${res.access_token}&per_page=50&page=${page}`
+    const activities = `https://www.strava.com/api/v3/athlete/activities?access_token=${res.access_token}&per_page=100&page=${page}`
     fetch(activities)
       .then((res) => res.json())
       .then(async function(data){
@@ -72,7 +72,7 @@ async function analize(all_data){
       if (post.type == "Run"){
         runs_count += 1;
         if (post.average_speed > 2){
-          run_speed.push(post.average_speed);
+          run_speed.push(post.average_speed*3.6);
         }
       } else {
         ride_count += 1
@@ -220,7 +220,9 @@ function initializePieChart(weekdays){
 }
 
 async function initializeRunningChart(speed, distance){
+  speed = speed.slice(-26)
   var N = speed.length;
+  let length = 25;
   var moveMean = [];
   for (var i = -1; i < N-1; i++)
   {
@@ -228,7 +230,7 @@ async function initializeRunningChart(speed, distance){
       moveMean.push(mean);
   }
   console.log(moveMean)
-  const ctx = document.getElementById('test').getContext('2d');
+  const ctx = document.getElementById('runningChart').getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'line',
     // Array.from(Array(speed.length).keys())
@@ -236,7 +238,7 @@ async function initializeRunningChart(speed, distance){
       labels: Array.from(Array(speed.length).keys()).slice(0, -6),
       datasets: [
         {
-        label: 'Exact speed',
+        label: 'Avg speed',
         data: speed.slice(5, -1),
         fill: false,
         borderColor: 'rgb(75, 192, 192)',
@@ -254,7 +256,18 @@ async function initializeRunningChart(speed, distance){
   options: {
     scales: {
         x: {
-                display: false,
+          display: false,
+        }
+    },
+    plugins: {
+        legend: {
+            labels: {
+                // This more specific font property overrides the global property
+                font: {
+                    size: 18,
+                    color: "red",
+                }
+            }
         }
     }
 }

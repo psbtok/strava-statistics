@@ -123,8 +123,6 @@ body{
   padding-bottom: 0;
 }
 canvas{
-  width: 5%;
-  height: 5%;
   padding-top: 30px;
   background-color: #030710;
   box-sizing: content-box !important;
@@ -144,4 +142,8 @@ canvas{
   letter-spacing: 6px;
   text-transform: uppercase;
   font-style: italic;
+}
+#runningChart{
+  padding: 15px;
+  padding-top: 50px;
 }
