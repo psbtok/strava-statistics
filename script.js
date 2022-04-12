@@ -137,7 +137,7 @@ function reAuthorize(){
 
 }
 
-reAuthorize()
+// reAuthorize()
 
 function animateValue(id, start, end, duration) {
     if (start === end) return;
