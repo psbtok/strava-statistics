@@ -26,7 +26,7 @@ async function getActivities(res) {
   var total_requests = total_pages-1;
   var successful_requests = 0;
   for(var page=1; page<total_pages; page++){
-    const activities = `https://www.strava.com/api/v3/athlete/activities?access_token=${res.access_token}&per_page=60&page=${page}`
+    const activities = `https://www.strava.com/api/v3/athlete/activities?access_token=${res.access_token}&per_page=200&page=${page}`
     fetch(activities)
       .then((res) => res.json())
       .then(async function(data){
@@ -78,14 +78,12 @@ async function analize(all_data){
       if (post.type == "Run"){
         runs_count += 1;
       } else {
-        if (post.average_speed > 2){
+        if ((post.distance > 10000) && (post.average_speed > 5)){
           run_speed.push(post.average_speed*3.6);
           if ((post.distance/1000) > longest_distance){
             longest_speed = (post.average_speed * 3.6).toFixed(1);
             longest_distance = (post.distance/1000).toFixed(1);
           }
-        }
-        if (post.distance > 3000){
           run_distance.push(post.distance/1000);
           if ((post.average_speed * 3.6) > fastest_speed){
             fastest_speed = (post.average_speed * 3.6).toFixed(1);
@@ -306,7 +304,7 @@ async function initializeRunningChartDistance(distance){
       labels: Array.from(Array(distance.length).keys()).slice(0, -6),
       datasets: [
         {
-        label: 'Average distance',
+        label: 'Distance',
         data: distance.slice(5, -1),
         fill: false,
         borderColor: '#CE6D8B',
