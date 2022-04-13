@@ -46,12 +46,39 @@
         <h3>Training day</h3>
         <h3 class="fav-day-container" ><span id="fav-day"></span></h3>
       </div>
-      <canvas id="myChart"></canvas>
-      <canvas id="runningChart"></canvas>
+      <div class="weekday-container">
+        <canvas id="myChart"></canvas>
+      </div>
+      <div class="performance-review">
+        <h2>20 Session<br>performance<br>review</h2>
+        <h3>Type: <span>Cycling</span></h3>
+        <canvas id="runningChartSpeed"></canvas>
+        <canvas id="runningChartDistance"></canvas>
+        <div class="top-activity">
+          <h4>Longest activity 🌍</h4>
+          <div class="numbers">
+            <p><span id="longest-distance"></span>km</p>
+            <p>at <span id="longest-speed"></span> km/h</p>
+          </div>
+        </div>
+        <div class="top-activity">
+          <h4>Fastest activity ⚡</h4>
+          <div class="numbers">
+            <p><span id="fastest-speed"></span>km/h</p>
+            <p>for <span id="fastest-distance"></span> km</p>
+          </div>
+        </div>
+        <div class="favorite-month">
+          <h3><span id="number-one">#1</span> Most Active</h3>
+          <h3 class="fav-month-container">Month: <span id="fav-month"></span></h3>
+        </div>
+        <canvas id="monthChart"></canvas>
+      </div>
     </div>
   </body>
   <script src="Polyline.encoded.js"></script>
   <script type="text/javascript" src="script.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script> </script>
 </html>
