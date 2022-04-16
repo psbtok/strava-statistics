@@ -51,7 +51,11 @@
       </div>
       <div class="performance-review">
         <h2>20 Session<br>performance<br>review</h2>
-        <h3>Type: <span>Cycling</span></h3>
+        <div class="type">
+          <!-- <h3>Type: <span>Cycling</span></h3> -->
+          <h3><span id="cycling" onClick="toggleCycling()">Cycling</span>/<span class="mute" id="running" onClick="toggleRunning()">Running</ span></h3>
+          <!-- <input type="checkbox" id="switch" /><label for="switch"></label> -->
+        </div>
         <canvas id="runningChartSpeed"></canvas>
         <canvas id="runningChartDistance"></canvas>
         <div class="top-activity">

@@ -2,6 +2,15 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+var run_speed = []; var bike_speed = [];
+var run_distance = []; var bike_distance = [];
+var longest_distance_c = 0; var longest_speed_c = 0; var longest_name_c = '';
+var fastest_speed_c = 0; var fastest_distance_c = 0; var fastest_name_c = '';
+var longest_distance_r = 0; var longest_speed_r = 0; var longest_name_r = '';
+var fastest_speed_r = 0; var fastest_distance_r = 0; var fastest_name_r = '';
+const background_color = ['#673C4F','#7F557D','#726E97','#7698B3','#83B5D1','#8A95A5','#B9C6AE'];
+const background_days = {'Monday': '#673C4F', 'Tuesday': '#7F557D', 'Wednesday': '#726E97', 'Thursday': '#7698B3', 'Friday': '#83B5D1', 'Saturday': '#8A95A5', 'Sunday': '#B9C6AE', };
+
 L.mapbox.accessToken = 'pk.eyJ1IjoicGV0b3NicmF0b2siLCJhIjoiY2wxdWtnNjM5MDB2ZzNkbDNzNzV2MThnbCJ9.--UWf-pthCKugxhxF4kmbQ';
 var map = L.mapbox.map('map')
     .setView([59.97, 30.25], 12)
@@ -59,7 +68,6 @@ async function getActivities(res) {
 }
 
 async function analize(all_data){
-  console.log('hi')
   let runs_count = 0
   let ride_count = 0
   let moving_time = 0
@@ -67,27 +75,34 @@ async function analize(all_data){
   let count = 0
   let weekdays = {'Monday':0, 'Tuesday':0, 'Wednesday':0, 'Thursday':0, 'Friday':0, 'Saturday':0, 'Sunday':0, };
   let months = {'January':0, 'February':0, 'March':0, 'April':0, 'May':0, 'June':0, 'July':0, 'August':0, 'September':0, 'October':0, 'November':0, 'December': 0};
-  let run_speed = [];
-  let run_distance = [];
-  var longest_distance = 0; var longest_speed = 0; var longest_name = '';
-  var fastest_speed = 0; var fastest_distance = 0; var fastest_name = '';
   let year = ''; let month = ''; let day = ''; let date = ''; let month_name = '';
   for (const dataset of all_data) {
     for (const post of dataset) {
-
       if (post.type == "Run"){
+        if ((post.distance > 3000) && (post.average_speed > 2)){
+          run_speed.push(post.average_speed*3.6);
+          if ((post.distance/1000) > longest_distance_r){
+            longest_speed_r = (post.average_speed * 3.6).toFixed(1);
+            longest_distance_r = (post.distance/1000).toFixed(1);
+          }
+          run_distance.push(post.distance/1000);
+          if ((post.average_speed * 3.6) > fastest_speed_r){
+            fastest_speed_r = (post.average_speed * 3.6).toFixed(1);
+            fastest_distance_r = (post.distance/1000).toFixed(1);
+          }
+        }
         runs_count += 1;
       } else {
         if ((post.distance > 10000) && (post.average_speed > 5)){
-          run_speed.push(post.average_speed*3.6);
-          if ((post.distance/1000) > longest_distance){
-            longest_speed = (post.average_speed * 3.6).toFixed(1);
-            longest_distance = (post.distance/1000).toFixed(1);
+          bike_speed.push(post.average_speed*3.6);
+          if ((post.distance/1000) > longest_distance_c){
+            longest_speed_c = (post.average_speed * 3.6).toFixed(1);
+            longest_distance_c = (post.distance/1000).toFixed(1);
           }
-          run_distance.push(post.distance/1000);
-          if ((post.average_speed * 3.6) > fastest_speed){
-            fastest_speed = (post.average_speed * 3.6).toFixed(1);
-            fastest_distance = (post.distance/1000).toFixed(1);
+          bike_distance.push(post.distance/1000);
+          if ((post.average_speed * 3.6) > fastest_speed_c){
+            fastest_speed_c = (post.average_speed * 3.6).toFixed(1);
+            fastest_distance_c = (post.distance/1000).toFixed(1);
           }
         }
         ride_count += 1
@@ -113,10 +128,10 @@ async function analize(all_data){
   initializeRunningChart(run_speed.reverse());
   initializeRunningChartDistance(run_distance.reverse());
   initializeChartMonths(months);
-  $('#fastest-speed').html(fastest_speed);
-  $('#fastest-distance').html(fastest_distance);
-  $('#longest-speed').html(longest_speed);
-  $('#longest-distance').html(longest_distance);
+  $('#fastest-speed').html(fastest_speed_c);
+  $('#fastest-distance').html(fastest_distance_c);
+  $('#longest-speed').html(longest_speed_c);
+  $('#longest-distance').html(longest_distance_c);
 }
 
 function initializeIntro(count, distance, moving_time, runs_count, ride_count){
@@ -182,8 +197,6 @@ function initializePieChart(weekdays){
   let fav_day;
   let fav_day_count = 0;
   let fav_day_color = '';
-  let background_color = ['#673C4F','#7F557D','#726E97','#7698B3','#83B5D1','#8A95A5','#B9C6AE'];
-  let background_days = {'Monday': '#673C4F', 'Tuesday': '#7F557D', 'Wednesday': '#726E97', 'Thursday': '#7698B3', 'Friday': '#83B5D1', 'Saturday': '#8A95A5', 'Sunday': '#B9C6AE', };
   for (var weekday in weekdays){
       if (weekdays[weekday] > fav_day_count){
         fav_day = weekday;
@@ -280,6 +293,7 @@ async function initializeRunningChart(speed){
     }
 }
   })
+  window.chartSpeed = myChart;
 }
 
 async function initializeRunningChartDistance(distance){
@@ -294,8 +308,6 @@ async function initializeRunningChartDistance(distance){
   }
   distance.push('naenae')
   moveMean.push('naenae')
-  console.log(distance)
-  console.log(moveMean)
   const ctx = document.getElementById('runningChartDistance').getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'line',
@@ -346,6 +358,7 @@ async function initializeRunningChartDistance(distance){
     }
 }
   })
+  window.chartDistance = myChart;
 }
 
 async function initializeChartMonths(months){
@@ -355,7 +368,6 @@ async function initializeChartMonths(months){
       labels.push(month.slice(0, 3));
       data.push(months[month])
   }
-  console.log(data)
   let fav_day;
   let fav_day_count = 0;
 
@@ -368,17 +380,18 @@ async function initializeChartMonths(months){
   $('#fav-month').text(fav_day)
   $('#fav-month').css('opacity', '1');
   const ctx = document.getElementById('monthChart').getContext('2d');
-  var myChart = new Chart(ctx, {
+  var myChart2 = new Chart(ctx, {
       type: 'bar',
       data: {
           labels: labels,
-          datasets: [{
+          datasets: [
+            {
               label: 'Month distribution',
               data: data,
               backgroundColor: '#C1F3F3',
               // borderColor: '#319AE1',
               borderWidth: 3
-          }]
+            }]
       },
       options: {
         scales: {
@@ -401,6 +414,33 @@ async function initializeChartMonths(months){
         },
     }
   });
+  window.chartMonths = myChart;
+}
+
+function toggleCycling() {
+  $('#running').addClass('mute');
+  $('#cycling').removeClass('mute');
+  chartSpeed.destroy();
+  initializeRunningChart(bike_speed.reverse());
+  chartDistance.destroy();
+  initializeRunningChartDistance(bike_distance.reverse());
+  $('#fastest-speed').html(fastest_speed_c);
+  $('#fastest-distance').html(fastest_distance_c);
+  $('#longest-speed').html(longest_speed_c);
+  $('#longest-distance').html(longest_distance_c);
+}
+
+function toggleRunning() {
+  $('#running').removeClass('mute');
+  $('#cycling').addClass('mute');
+  chartSpeed.destroy();
+  initializeRunningChart(run_speed);
+  chartDistance.destroy();
+  initializeRunningChartDistance(run_distance);
+  $('#fastest-speed').html(fastest_speed_r);
+  $('#fastest-distance').html(fastest_distance_r);
+  $('#longest-speed').html(longest_speed_r);
+  $('#longest-distance').html(longest_distance_r);
 }
 
 reAuthorize()

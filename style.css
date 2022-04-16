@@ -9,6 +9,11 @@ body{
   background-color: #030710;
   /* 0e141a */
 }
+:root {
+  --cycling: #E5BEED;
+  --running: #BDD9BF;
+}
+
 #map {
   height: 65vh;
   width: 100vw;
@@ -66,12 +71,12 @@ body{
 
 .cycling-ratio-filled{
   background-color: #1ABA4A;
-  background-color: #E5BEED;
+  background-color: var(--cycling);
 }
 
 .running-ratio-filled{
   background-color: #81ADC8;
-  background-color: #BDD9BF;
+  background-color: var(--running);
 }
 
 /* .location-data{
@@ -161,14 +166,74 @@ canvas{
 .performance-review h3{
   font-size: 2.5em;
   text-transform: capitalize;
-  padding: 0 50px;
+  padding: 4px 0;
+}
+.mute{
+  background-color: #292832 !important;
+}
+.performance-review .type{
   margin-top: 20px;
+  padding: 0 50px;
+  /* width: 100%; */
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
 }
 .performance-review h3 span{
-    background-color: #E5BEED;
   /* background-color: #378FDC; */
   padding: 2px 4px;
+  transition-duration: 0.3s;
+  margin: 3px;
 }
+.performance-review #cycling{
+  background-color: var(--cycling);
+}
+.performance-review #running{
+  background-color: var(--running);
+}
+input[type=checkbox]{
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+label {
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 80px;
+	height: 52px;
+	display: inline-block;
+	/* border-radius: 100px; */
+	position: relative;
+  background: #E5BEED;
+  justify-content: space-between;
+}
+
+label:after {
+	content: '';
+	position: absolute;
+	top: 7px;
+	left: 7px;
+	width: 38px;
+	height: 38px;
+	background: #fff;
+	border-radius: 90px;
+	transition: 0.3s;
+}
+
+input:checked + label {
+  background: var(--running);
+}
+
+input:checked + label:after {
+	left: calc(100% - 5px);
+	transform: translateX(-100%);
+}
+
+label:active:after {
+	width: 40px;
+}
+
 .top-activity{
   padding: 50px;
   padding-top: 30px;
