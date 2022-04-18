@@ -8,8 +8,8 @@ var longest_distance_c = 0; var longest_speed_c = 0; var longest_name_c = '';
 var fastest_speed_c = 0; var fastest_distance_c = 0; var fastest_name_c = '';
 var longest_distance_r = 0; var longest_speed_r = 0; var longest_name_r = '';
 var fastest_speed_r = 0; var fastest_distance_r = 0; var fastest_name_r = '';
-const background_color = ['#673C4F','#7F557D','#726E97','#7698B3','#83B5D1','#8A95A5','#B9C6AE'];
-const background_days = {'Monday': '#673C4F', 'Tuesday': '#7F557D', 'Wednesday': '#726E97', 'Thursday': '#7698B3', 'Friday': '#83B5D1', 'Saturday': '#8A95A5', 'Sunday': '#B9C6AE', };
+const background_color = ['#673C4F','#7F557D','#726E97','#7698B3','#83B5D1','#BFEDEF','#E5F9E0'];
+const background_days = {'Monday': '#673C4F', 'Tuesday': '#7F557D', 'Wednesday': '#726E97', 'Thursday': '#7698B3', 'Friday': '#83B5D1', 'Saturday': '#BFEDEF', 'Sunday': '#E5F9E0', };
 
 L.mapbox.accessToken = 'pk.eyJ1IjoicGV0b3NicmF0b2siLCJhIjoiY2wxdWtnNjM5MDB2ZzNkbDNzNzV2MThnbCJ9.--UWf-pthCKugxhxF4kmbQ';
 var map = L.mapbox.map('map')
@@ -31,11 +31,12 @@ var polyline_options_2 = {
 
 async function getActivities(res) {
   var all_data = [];
-  let total_pages = 2;
+  let total_pages = 4;
+  let request_size = [0, 100, 100, 100]
   var total_requests = total_pages-1;
   var successful_requests = 0;
   for(var page=1; page<total_pages; page++){
-    const activities = `https://www.strava.com/api/v3/athlete/activities?access_token=${res.access_token}&per_page=200&page=${page}`
+    const activities = `https://www.strava.com/api/v3/athlete/activities?access_token=${res.access_token}&per_page=${request_size[page]}&page=${page}`
     fetch(activities)
       .then((res) => res.json())
       .then(async function(data){
@@ -45,7 +46,31 @@ async function getActivities(res) {
           successful_requests +=1
         }
         if (successful_requests == total_requests){
-          await analize(all_data)
+          let dates = []
+          let data_sorted = [[], [], []]
+          for (let dataset of all_data){
+            // console.log(dataset[0].start_date_local)
+            date = dataset[0].start_date_local;
+            year = +date.substring(0, 4);
+            month = +date.substring(5, 7);
+            dates.push(year*100 + month)
+          }
+          dates.sort(function(a, b) {
+            return a - b;
+            // console.log(dates)
+          });
+          dates.reverse()
+          let count = 0
+          for (let dataset of all_data){
+            date = dataset[0].start_date_local
+            year = +date.substring(0, 4);
+            month = +date.substring(5, 7);
+            date = (year*100 + month)
+            index = dates.indexOf(date)
+            data_sorted[index] = all_data[count]
+            count += 1;
+          }
+          await analize(data_sorted)
         }
 
 
@@ -125,8 +150,10 @@ async function analize(all_data){
   }
   initializeIntro(count, distance, moving_time, runs_count, ride_count)
   initializePieChart(weekdays)
-  initializeRunningChart(run_speed.reverse());
-  initializeRunningChartDistance(run_distance.reverse());
+  initializeRunningChart(bike_speed.reverse());
+  initializeRunningChartDistance(bike_distance.reverse());
+  run_speed.reverse();
+  run_distance.reverse();
   initializeChartMonths(months);
   $('#fastest-speed').html(fastest_speed_c);
   $('#fastest-distance').html(fastest_distance_c);
@@ -421,9 +448,9 @@ function toggleCycling() {
   $('#running').addClass('mute');
   $('#cycling').removeClass('mute');
   chartSpeed.destroy();
-  initializeRunningChart(bike_speed.reverse());
+  initializeRunningChart(bike_speed);
   chartDistance.destroy();
-  initializeRunningChartDistance(bike_distance.reverse());
+  initializeRunningChartDistance(bike_distance);
   $('#fastest-speed').html(fastest_speed_c);
   $('#fastest-distance').html(fastest_distance_c);
   $('#longest-speed').html(longest_speed_c);
