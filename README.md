@@ -4,7 +4,7 @@
 
 ## About
 Strats a website for monitoring a person's strava activities. Made for analyzing cycling and running information. Uses Strava API, JavaScript and Chart.JS.<br>
-Link: [strats.netlify.app](https://strats.netlify.app) <br>
+Link: [strats.netlify.app](https://strats.netlify.app). Made for mobile phones. <br>
 Some countries (including Russia) require VPN to open the page. <br>
 Implemented features:
 - Distribution of activities by type
