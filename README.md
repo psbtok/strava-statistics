@@ -21,8 +21,8 @@ $ git clone [https://github.com/petosbratok/strava-statistics](https://github.co
 
 Run the index.html file
 
-Customize map by changing **L.mapbox.accessToken** to your own token
+Customize map by changing **L.mapbox.accessToken** to your own token <br>
 How to: [https://youtu.be/J0E-1eYeLlM](https://youtu.be/J0E-1eYeLlM)
 
-See your own statistics after changing **client_id**, **client_secret** and **refresh_token**
+See your own statistics after changing **client_id**, **client_secret** and **refresh_token** <br>
 How to get required tokens: [https://youtu.be/sgscChKfGyg](https://youtu.be/sgscChKfGyg)
