@@ -3,14 +3,16 @@
 
 
 ## About
-Strats a website for monitoring a person's strava activities. Made for analyzing cycling and running information. Uses JavaScript and Chart.JS module.<br>
+Strats a website for monitoring a person's strava activities. Made for analyzing cycling and running information. Uses Strava API, JavaScript and Chart.JS.<br>
 Link: [strats.netlify.app](https://strats.netlify.app) <br>
 Some countries (including Russia) require VPN to open the page. <br>
 Implemented features:
 - Distribution of activities by type
 - Map of activities
-- Favorite days
+- Day of the week distribution
 - Performance review - last 20 activities (cycling/running) review. Analyzes speed and distance and their 5-day moving averages. To get the intended experience, user needs 25 activities of both running and cycling.
+- Month distribution
+
 # Setup
 
 The first thing to do is to clone the repository:
