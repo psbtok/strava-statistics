@@ -11,7 +11,7 @@ var fastest_speed_r = 0; var fastest_distance_r = 0; var fastest_name_r = '';
 const background_color = ['#673C4F','#7F557D','#726E97','#7698B3','#83B5D1','#BFEDEF','#E5F9E0'];
 const background_days = {'Monday': '#673C4F', 'Tuesday': '#7F557D', 'Wednesday': '#726E97', 'Thursday': '#7698B3', 'Friday': '#83B5D1', 'Saturday': '#BFEDEF', 'Sunday': '#E5F9E0', };
 
-L.mapbox.accessToken = 'pk.eyJ1IjoicGV0b3NicmF0b2siLCJhIjoiY2wxdWtnNjM5MDB2ZzNkbDNzNzV2MThnbCJ9.--UWf-pthCKugxhxF4kmbQ';
+L.mapbox.accessToken = mapbox_token;
 var map = L.mapbox.map('map')
     .setView([59.97, 30.25], 12)
     .addLayer(L.mapbox.styleLayer('mapbox://styles/petosbratok/cl1ukjde8000514ltcfj80eto'));
@@ -188,9 +188,9 @@ function reAuthorize(){
 
     body: JSON.stringify({
 
-            client_id: '80748',
-            client_secret: 'dd7bfd8626e77e41d351f7a76a85be61531a5ceb',
-            refresh_token: '33d2cf7c17d96d25428a3190515a237c4e19f84b',
+            client_id: client_id,
+            client_secret: client_secret,
+            refresh_token: refresh_token,
             grant_type: 'refresh_token'
         })
   }).then((res) => res.json())
@@ -235,12 +235,16 @@ function initializePieChart(weekdays){
   $('#fav-day').css('opacity', '1');
   $('.fav-day-container').css("background-color", fav_day_color);
   const ctx = document.getElementById('myChart').getContext('2d');
+  var data_percentage = []
+  var sum = data.reduce((a, b) => a + b, 0)
+  for (let data_i of data){
+    data_percentage.push(data_i/sum)
+  }
   var myChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
           labels: labels,
           datasets: [{
-              label: '# of Votes',
               data: data,
               backgroundColor: background_color,
               borderWidth: 0

@@ -276,3 +276,51 @@ label:active:after {
   font-size: 1.75em;
   background: inherit;
 }
+.favorite-month .label{
+  padding-left: 50px;
+}
+footer *{
+  font-family: monospace !important;
+  font-size: 1em;
+}
+footer{
+  background-color: black;
+  margin-top: 50px;
+  box-sizing: border-box;
+  padding: 30px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+footer a{
+  color: #007bff;
+  text-decoration: none;
+}
+footer p, footer ul{
+  margin-bottom: 16px;
+}
+.created-by{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 16px;
+}
+.created-by span{
+  display: inline-block;
+  margin-bottom: 5px;
+}
+.flexing-container{
+  font-size: 16px;
+  display: flex;
+  flex-direction: row;
+}
+.flexing-container .technologies{
+  margin-right: 100px;
+}
+.flexing-container .technologies ul{
+  columns: 2;
+}
+.flexing-container ul li{
+  height: 24px;
+  list-style: none;
+}

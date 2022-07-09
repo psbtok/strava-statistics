@@ -1,0 +1,157 @@
+@media (min-width: 600px) {
+  .intro-container, .activities, .total-training{
+    width: 600px;
+    max-width: 80vw;
+    text-align: left;
+  }
+  .intro-container h1{
+    margin: 0;
+  }
+  .home{
+    align-items: center;
+  }
+}
+
+@media (min-width: 750px) {
+  html{
+    font-size: 0.8em;
+  }
+  .favorite-day-container{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+  }
+  .favorite-day{
+    width: 30vw;
+  }
+  .weekday-container{
+    padding-top: 25px;
+    width: 400px;
+    max-width: 80vw;
+  }
+  .charts{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .performance-review h2, .type{
+    display: inline-block;
+  }
+  .performance-review br{
+    display: none;
+  }
+  #runningChartSpeed, #runningChartDistance{
+    max-width: 40vw;
+    max-height: 25vw;
+  }
+  .numbers{
+    justify-content: flex-start !important;
+  }
+  .numbers p{
+    padding-right: 8px;
+  }
+  .records-fav-month{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+  }
+  .favorite-month{
+    padding: 0;
+    padding-top: 50px;
+    padding-left: 20px;
+    width: 55vw;
+  }
+  .top-activity{
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .favorite-month h3{
+    padding-right: 6px;
+    display: inline-block;
+  }
+  .records{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  #monthChart{
+    height: 30vw;
+  }
+}
+
+@media (min-width: 1100px) {
+  .intro-map{
+    display: flex;
+    flex-direction: row;
+  }
+  .intro-container h1{
+    margin-left: 50px;
+  }
+  .intro{
+    width: 40vw;
+  }
+  .intro-container, .activities, .total-training{
+    max-width: 30vw;
+  }
+  .home{
+    align-items: flex-start;
+    width: auto;
+  }
+  #map{
+    height: 100vh;
+  }
+}
+@media (max-width: 800px) {
+  footer{
+    flex-direction: column;
+    min-height: 50vh;
+  }
+  .created-by, .flexing-container{
+    align-items: center;
+    justify-content: space-around;
+    padding: 0px 30px;
+  }
+  .technologies{
+    margin-right: 0px !important;
+  }
+}
+@media (max-width: 400px) {
+  footer{
+    /* min-height: 70vh; */
+  }
+  .flexing-container{
+    flex-direction: column;
+    padding: 0 15px;
+  }
+  .technologies, .can-do{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .created-by{
+    text-align: center;
+  }
+  .technologies p, .can-do p{
+    padding-right: 10px;
+    width: 34%;
+  }
+  .technologies ul{
+    width: 100%;
+    columns: 2;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  .flexing-container ul{
+    width: 200px;
+  }
+}
+
+@media (max-width: 600px){
+  .favorite-month{
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

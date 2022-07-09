@@ -7,80 +7,126 @@
     <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
     <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="media.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-    <div id="home" class="home">
-      <div class="intro-container">
-        <h1><span id="censored">classified</span><br>athlete's<br>stats</h1>
+    <div class="intro-map">
+      <div id="home" class="home">
+        <div class="intro-container">
+          <h1><span id="censored">classified</span><br>athlete's<br>stats</h1>
+        </div>
+        <div class="activities">
+          <h2>Main activities</h2>
+          <ul>
+            <li>
+              <span>Cycling</span>
+              <div class="cycling-ratio">
+                <div class="cycling-ratio-filled"></div>
+              </div>
+            </li>
+            <li>
+              <span>Running</span>
+              <div class="running-ratio">
+                <div class="running-ratio-filled"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="total-training">
+          <div>According to last <span id="count"> </span> sessions</div>
+          <div>You overcame <span id="distance"> </span> km</div>
+          <div>In <span id="moving_time"> </span> hours! Keep it up!</div>
+        </div>
       </div>
-      <div class="activities">
-        <h2>Main activities</h2>
-        <ul>
-          <li>
-            <span>Cycling</span>
-            <div class="cycling-ratio">
-              <div class="cycling-ratio-filled"></div>
-            </div>
-          </li>
-          <li>
-            <span>Running</span>
-            <div class="running-ratio">
-              <div class="running-ratio-filled"></div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="total-training">
-        <div>According to last <span id="count"> </span> sessions</div>
-        <div>You overcame <span id="distance"> </span> km</div>
-        <div>In <span id="moving_time"> </span> hours! Keep it up!</div>
-      </div>
+      <div id='map'></div>
     </div>
-    <div id='map'></div>
     <div class="stats">
-      <div class="favorite-day">
-        <h3>Favorite</h3>
-        <h3>Training day</h3>
-        <h3 class="fav-day-container" ><span id="fav-day"></span></h3>
-      </div>
-      <div class="weekday-container">
-        <canvas id="myChart"></canvas>
+      <div class="favorite-day-container">
+        <div class="favorite-day">
+          <h3>Favorite</h3>
+          <h3>Training day</h3>
+          <h3 class="fav-day-container" ><span id="fav-day"></span></h3>
+        </div>
+        <div class="weekday-container">
+          <canvas id="myChart"></canvas>
+        </div>
       </div>
       <div class="performance-review">
-        <h2>20 Session<br>performance<br>review</h2>
+        <h2>20 Session <br>performance <br>review</h2>
         <div class="type">
           <!-- <h3>Type: <span>Cycling</span></h3> -->
           <h3><span id="cycling" onClick="toggleCycling()">Cycling</span>/<span class="mute" id="running" onClick="toggleRunning()">Running</ span></h3>
           <!-- <input type="checkbox" id="switch" /><label for="switch"></label> -->
         </div>
-        <canvas id="runningChartSpeed"></canvas>
-        <canvas id="runningChartDistance"></canvas>
-        <div class="top-activity">
-          <h4>Longest activity 🌍</h4>
-          <div class="numbers">
-            <p><span id="longest-distance"></span>km</p>
-            <p>at <span id="longest-speed"></span> km/h</p>
+        <div class="charts">
+          <canvas id="runningChartSpeed"></canvas>
+          <canvas id="runningChartDistance"></canvas>
+        </div>
+        <div class="records-fav-month">
+          <div class="records">
+            <div class="top-activity">
+              <h4>Longest activity 🌍</h4>
+              <div class="numbers">
+                <p><span id="longest-distance"></span>km</p>
+                <p>at <span id="longest-speed"></span> km/h</p>
+              </div>
+            </div>
+            <div class="top-activity">
+              <h4>Fastest activity ⚡</h4>
+              <div class="numbers">
+                <p><span id="fastest-speed"></span>km/h</p>
+                <p>for <span id="fastest-distance"></span> km</p>
+              </div>
+            </div>
+          </div>
+          <div class="favorite-month">
+            <div class="label">
+              <h3><span id="number-one">#1</span> Most Active</h3>
+              <h3 class="fav-month-container">Month: <span id="fav-month"></span></h3>
+            </div>
+            <canvas id="monthChart"></canvas>
           </div>
         </div>
-        <div class="top-activity">
-          <h4>Fastest activity ⚡</h4>
-          <div class="numbers">
-            <p><span id="fastest-speed"></span>km/h</p>
-            <p>for <span id="fastest-distance"></span> km</p>
-          </div>
-        </div>
-        <div class="favorite-month">
-          <h3><span id="number-one">#1</span> Most Active</h3>
-          <h3 class="fav-month-container">Month: <span id="fav-month"></span></h3>
-        </div>
-        <canvas id="monthChart"></canvas>
       </div>
+      <footer>
+        <div class="created-by">
+          <div class="">
+            <span>Created by <a href="https://github.com/petosbratok">petosbratok</a></span>
+            <br>
+            <span>Full-stack on daily basis</span>
+          </div>
+          <p>Contact me: <a href="mailto:opletaevpetr@mail.ru">opletaevpetr@mail.ru</a> </p>
+        </div>
+        <div class="flexing-container">
+          <div class="technologies">
+            <p>What I use:</p>
+            <ul>
+              <li>HTML</li>
+              <li>JS</li>
+              <li>CSS</li>
+              <li>Python</li>
+              <li>Django</li>
+              <li>SQL</li>
+            </ul>
+          </div>
+          <div class="can-do">
+            <p>What I do:</p>
+            <ul>
+              <li>Web design</li>
+              <li>Front-end development</li>
+              <li>Back-end development</li>
+            </ul>
+          </div>
+        </div>
+      </footer>
     </div>
   </body>
   <script src="Polyline.encoded.js"></script>
+  <script type="text/javascript" src="env_variables.js"></script>
   <script type="text/javascript" src="script.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
