@@ -85,6 +85,9 @@
     display: flex;
     flex-direction: row;
   }
+  .activities{
+    margin-top: 28px;
+  }
   .intro-container h1{
     margin-left: 50px;
   }

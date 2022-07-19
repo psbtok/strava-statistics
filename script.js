@@ -93,11 +93,8 @@ async function getActivities(res) {
 }
 
 async function analize(all_data){
-  let runs_count = 0
-  let ride_count = 0
-  let moving_time = 0
-  let distance = 0
-  let count = 0
+  let runs_time = 0; let ride_time = 0; let swim_time = 0
+  let moving_time = 0; let distance = 0; let count = 0
   let weekdays = {'Monday':0, 'Tuesday':0, 'Wednesday':0, 'Thursday':0, 'Friday':0, 'Saturday':0, 'Sunday':0, };
   let months = {'January':0, 'February':0, 'March':0, 'April':0, 'May':0, 'June':0, 'July':0, 'August':0, 'September':0, 'October':0, 'November':0, 'December': 0};
   let year = ''; let month = ''; let day = ''; let date = ''; let month_name = '';
@@ -116,8 +113,8 @@ async function analize(all_data){
             fastest_distance_r = (post.distance/1000).toFixed(1);
           }
         }
-        runs_count += 1;
-      } else {
+        runs_time += (post.moving_time/60/60);
+      } else if (post.type == "Ride") {
         if ((post.distance > 10000) && (post.average_speed > 5)){
           bike_speed.push(post.average_speed*3.6);
           if ((post.distance/1000) > longest_distance_c){
@@ -130,7 +127,9 @@ async function analize(all_data){
             fastest_distance_c = (post.distance/1000).toFixed(1);
           }
         }
-        ride_count += 1
+        ride_time += (post.moving_time/60/60)
+      } else {
+        swim_time += (post.moving_time/60/60)
       }
       date = post.start_date_local;
       year = +date.substring(0, 4);
@@ -148,7 +147,7 @@ async function analize(all_data){
 
     }
   }
-  initializeIntro(count, distance, moving_time, runs_count, ride_count)
+  initializeIntro(count, distance, moving_time, runs_time, ride_time, swim_time)
   initializePieChart(weekdays)
   initializeRunningChart(bike_speed.reverse());
   initializeRunningChartDistance(bike_distance.reverse());
@@ -161,20 +160,23 @@ async function analize(all_data){
   $('#longest-distance').html(longest_distance_c);
 }
 
-function initializeIntro(count, distance, moving_time, runs_count, ride_count){
+function initializeIntro(count, distance, moving_time, runs_time, ride_time, swim_time){
   var distance_part = parseInt(distance - 800);
   $('.total-training').css('opacity', '1');
   animateValue("count", 0, count, 3000);
   animateValue("distance", distance_part, (distance).toFixed(), 3000);
   animateValue("moving_time", 0, (moving_time).toFixed(), 3000);
 
-
-  let runs_count_percentage = (runs_count)/(runs_count + ride_count) * 100
-  let cycling_count_percentage = (ride_count)/(runs_count + ride_count) * 100
-  $('.running-ratio-filled').width(runs_count_percentage + '%');
-  $('.cycling-ratio-filled').width(cycling_count_percentage + '%');
+  let overall_time = runs_time + swim_time + ride_time
+  fill_ratio('.cycling-ratio-filled', ride_time, overall_time)
+  fill_ratio('.running-ratio-filled', runs_time, overall_time)
+  fill_ratio('.swimming-ratio-filled', swim_time, overall_time)
 }
 
+function fill_ratio(html_element_name, sport_count, overall_time){
+  count_percentage = sport_count / overall_time * 100
+  $(html_element_name).width(count_percentage + '%');
+}
 
 function reAuthorize(){
   const auth_link = "https://www.strava.com/oauth/token"
