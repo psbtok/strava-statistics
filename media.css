@@ -23,6 +23,10 @@
   }
   .favorite-day{
     width: 30vw;
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   .weekday-container{
     padding-top: 25px;
@@ -77,6 +81,12 @@
   }
   #monthChart{
     height: 30vw;
+  }
+  .fav-day-container{
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
   }
 }
 

@@ -3,26 +3,29 @@ function sleep(ms) {
 }
 
 var run_speed = []; var bike_speed = [];
+var run_dates = []; var bike_dates = [];
 var run_distance = []; var bike_distance = [];
 var longest_distance_c = 0; var longest_speed_c = 0; var longest_name_c = '';
 var fastest_speed_c = 0; var fastest_distance_c = 0; var fastest_name_c = '';
 var longest_distance_r = 0; var longest_speed_r = 0; var longest_name_r = '';
 var fastest_speed_r = 0; var fastest_distance_r = 0; var fastest_name_r = '';
+var showDays = 20; var meanDays = 10;
+
 const background_color = ['#673C4F','#7F557D','#726E97','#7698B3','#83B5D1','#BFEDEF','#E5F9E0'];
 const background_days = {'Monday': '#673C4F', 'Tuesday': '#7F557D', 'Wednesday': '#726E97', 'Thursday': '#7698B3', 'Friday': '#83B5D1', 'Saturday': '#BFEDEF', 'Sunday': '#E5F9E0', };
 
 L.mapbox.accessToken = mapbox_token;
-var map = L.mapbox.map('map')
+const map = L.mapbox.map('map')
     .setView([59.97, 30.25], 12)
     .addLayer(L.mapbox.styleLayer('mapbox://styles/petosbratok/cl1ukjde8000514ltcfj80eto'));
 
-var polyline_options = {
+const polyline_options = {
     color: '#BDD9BF',
     weight: 3,
     opacity: 0.7,
     smoothFactor: 2.5,
 };
-var polyline_options_2 = {
+const polyline_options_2 = {
     color: '#E5BEED',
     weight: 3,
     opacity: 0.4,
@@ -31,8 +34,8 @@ var polyline_options_2 = {
 
 async function getActivities(res) {
   var all_data = [];
-  let total_pages = 4;
-  let request_size = [0, 100, 100, 100]
+  let total_pages = 5;
+  let request_size = [0, 100, 100, 100, 100]
   var total_requests = total_pages-1;
   var successful_requests = 0;
   for(var page=1; page<total_pages; page++){
@@ -49,7 +52,6 @@ async function getActivities(res) {
           let dates = []
           let data_sorted = [[], [], []]
           for (let dataset of all_data){
-            // console.log(dataset[0].start_date_local)
             date = dataset[0].start_date_local;
             year = +date.substring(0, 4);
             month = +date.substring(5, 7);
@@ -57,7 +59,6 @@ async function getActivities(res) {
           }
           dates.sort(function(a, b) {
             return a - b;
-            // console.log(dates)
           });
           dates.reverse()
           let count = 0
@@ -98,25 +99,46 @@ async function analize(all_data){
   let weekdays = {'Monday':0, 'Tuesday':0, 'Wednesday':0, 'Thursday':0, 'Friday':0, 'Saturday':0, 'Sunday':0, };
   let months = {'January':0, 'February':0, 'March':0, 'April':0, 'May':0, 'June':0, 'July':0, 'August':0, 'September':0, 'October':0, 'November':0, 'December': 0};
   let year = ''; let month = ''; let day = ''; let date = ''; let month_name = '';
+
   for (const dataset of all_data) {
     for (const post of dataset) {
+      date = post.start_date_local;
+      year = +date.substring(0, 4);
+      month = +date.substring(5, 7);
+      day = +date.substring(8, 10);
+      date = (month + ', ' + day + ', ' + year).toString()
+      date = new Date(date);
+      dayOfTheWeek = date.toLocaleString('en-us', {weekday: 'long'});
+      weekdays[dayOfTheWeek] += 1;
+      month_name = date.toLocaleString('en-us', { month: 'long' })
+      months[month_name] += 1;
+      count += 1;
+      
+      distance_curr = parseFloat((post.distance/1000).toFixed(1))
+      speed = parseFloat((post.average_speed*3.6).toFixed(1))
+      distance += distance_curr
+      moving_time += (post.moving_time/60/60);
+      info = `${month_name.substring(0, 3)} ${day}, ${year}; ${distance_curr} km at ${speed} km/h`
+
       if (post.type == "Run"){
-        if ((post.distance > 3000) && (post.average_speed > 2)){
-          run_speed.push(post.average_speed*3.6);
-          if ((post.distance/1000) > longest_distance_r){
-            longest_speed_r = (post.average_speed * 3.6).toFixed(1);
-            longest_distance_r = (post.distance/1000).toFixed(1);
+        if (distance_curr > 2 && (post.average_speed > 2)){
+          run_speed.push(speed);
+          run_dates.push(info)
+          if (distance_curr > longest_distance_r){
+            longest_speed_r = speed
+            longest_distance_r = distance_curr
           }
-          run_distance.push(post.distance/1000);
-          if ((post.average_speed * 3.6) > fastest_speed_r){
-            fastest_speed_r = (post.average_speed * 3.6).toFixed(1);
-            fastest_distance_r = (post.distance/1000).toFixed(1);
+          run_distance.push(distance_curr);
+          if (speed > fastest_speed_r){
+            fastest_speed_r = speed;
+            fastest_distance_r = distance_curr
           }
         }
         runs_time += (post.moving_time/60/60);
       } else if (post.type == "Ride") {
         if ((post.distance > 10000) && (post.average_speed > 5)){
           bike_speed.push(post.average_speed*3.6);
+          bike_dates.push(info)
           if ((post.distance/1000) > longest_distance_c){
             longest_speed_c = (post.average_speed * 3.6).toFixed(1);
             longest_distance_c = (post.distance/1000).toFixed(1);
@@ -131,33 +153,29 @@ async function analize(all_data){
       } else {
         swim_time += (post.moving_time/60/60)
       }
-      date = post.start_date_local;
-      year = +date.substring(0, 4);
-      month = +date.substring(5, 7);
-      day = +date.substring(8, 10);
-      date = (month + ', ' + day + ', ' + year).toString()
-      date = new Date(date);
-      dayOfTheWeek = date.toLocaleString('en-us', {weekday: 'long'});
-      weekdays[dayOfTheWeek] += 1;
-      month_name = date.toLocaleString('en-us', { month: 'long' })
-      months[month_name] += 1;
-      count += 1;
-      distance += (post.distance/1000);
-      moving_time += (post.moving_time/60/60);
-
     }
   }
+  
+  reverse_arrays()
+
   initializeIntro(count, distance, moving_time, runs_time, ride_time, swim_time)
   initializePieChart(weekdays)
-  initializeRunningChart(bike_speed.reverse());
-  initializeRunningChartDistance(bike_distance.reverse());
-  run_speed.reverse();
-  run_distance.reverse();
+  initializeChartSpeed(bike_speed, bike_dates);
+  initializeChartDistance(bike_distance, bike_dates);
   initializeChartMonths(months);
   $('#fastest-speed').html(fastest_speed_c);
   $('#fastest-distance').html(fastest_distance_c);
   $('#longest-speed').html(longest_speed_c);
   $('#longest-distance').html(longest_distance_c);
+}
+
+function reverse_arrays(){
+  bike_distance.reverse()
+  bike_speed.reverse()
+  bike_dates.reverse()
+  run_speed.reverse();
+  run_distance.reverse();
+  run_dates.reverse()
 }
 
 function initializeIntro(count, distance, moving_time, runs_time, ride_time, swim_time){
@@ -266,14 +284,14 @@ function initializePieChart(weekdays){
   });
 }
 
-async function initializeRunningChart(speed){
-  speed = speed.slice(-26)
+async function initializeChartSpeed(speed, info){
+  speed = speed.slice(-1 * (showDays + 1 + meanDays))
+  info = info.slice(-1 * (showDays + 1))
   var N = speed.length;
-  let length = 25;
   var moveMean = [];
-  for (var i = 0; i < N; i++)
+  for (var i = 0; i < (showDays+meanDays+1); i++)
   {
-      var mean = (speed[i] + speed[i-1] + speed[i-2] + speed[i-3] + speed[i-4])/5.0;
+      var mean = speed.slice(i-meanDays+1,i+1).reduce((a, b) => a + b, 0)/meanDays;
       moveMean.push(mean);
   }
   speed.push('naenae')
@@ -283,18 +301,19 @@ async function initializeRunningChart(speed){
     type: 'line',
     // Array.from(Array(speed.length).keys())
     data: {
-      labels: Array.from(Array(speed.length).keys()).slice(0, -6),
+      // labels: Array.from(Array(speed.length).keys()).slice(0, -6),
+      labels: info,
       datasets: [
         {
         label: 'Average speed',
-        data: speed.slice(5, -1),
+        data: speed.slice(meanDays, -1),
         fill: false,
         borderColor: '#7699D4',
         cubicInterpolationMode: 'monotone',
         },
         {
-        label: '5 Session Moving Average',
-        data: moveMean.slice(5, -1),
+        label: meanDays + ' Session Moving Average',
+        data: moveMean.slice(meanDays, -1),
         fill: false,
         borderColor: '#D8DBE2',
         cubicInterpolationMode: 'monotone',
@@ -329,14 +348,14 @@ async function initializeRunningChart(speed){
   window.chartSpeed = myChart;
 }
 
-async function initializeRunningChartDistance(distance){
-  distance = distance.slice(-26)
+async function initializeChartDistance(distance, info){
+  distance = distance.slice(-1 * (showDays + 1 + meanDays))
+  info = info.slice(-1 * (showDays + 1))
   var N = distance.length;
-  let length = 25;
   var moveMean = [];
-  for (var i = 0; i < N; i++)
+  for (var i = 0; i < (showDays+meanDays+1); i++)
   {
-      var mean = (distance[i] + distance[i-1] + distance[i-2] + distance[i-3] + distance[i-4])/5.0;
+      var mean = distance.slice(i-meanDays+1,i+1).reduce((a, b) => a + b, 0)/meanDays;
       moveMean.push(mean);
   }
   distance.push('naenae')
@@ -344,20 +363,19 @@ async function initializeRunningChartDistance(distance){
   const ctx = document.getElementById('runningChartDistance').getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'line',
-    // Array.from(Array(distance.length).keys())
     data: {
-      labels: Array.from(Array(distance.length).keys()).slice(0, -6),
+      labels: info,
       datasets: [
         {
         label: 'Distance',
-        data: distance.slice(5, -1),
+        data: distance.slice(meanDays, -1),
         fill: false,
         borderColor: '#CE6D8B',
         cubicInterpolationMode: 'monotone',
         },
         {
-        label: '5 Session Moving Average',
-        data: moveMean.slice(5, -1),
+        label: meanDays + ' Session Moving Average',
+        data: moveMean.slice(meanDays, -1),
         fill: false,
         borderColor: '#CEBBC9',
         cubicInterpolationMode: 'monotone',
@@ -454,9 +472,9 @@ function toggleCycling() {
   $('#running').addClass('mute');
   $('#cycling').removeClass('mute');
   chartSpeed.destroy();
-  initializeRunningChart(bike_speed);
+  initializeChartSpeed(bike_speed, bike_dates);
   chartDistance.destroy();
-  initializeRunningChartDistance(bike_distance);
+  initializeChartDistance(bike_distance, bike_dates);
   $('#fastest-speed').html(fastest_speed_c);
   $('#fastest-distance').html(fastest_distance_c);
   $('#longest-speed').html(longest_speed_c);
@@ -467,9 +485,9 @@ function toggleRunning() {
   $('#running').removeClass('mute');
   $('#cycling').addClass('mute');
   chartSpeed.destroy();
-  initializeRunningChart(run_speed);
+  initializeChartSpeed(run_speed, run_dates);
   chartDistance.destroy();
-  initializeRunningChartDistance(run_distance);
+  initializeChartDistance(run_distance, run_dates);
   $('#fastest-speed').html(fastest_speed_r);
   $('#fastest-distance').html(fastest_distance_r);
   $('#longest-speed').html(longest_speed_r);
