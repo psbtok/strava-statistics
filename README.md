@@ -1,6 +1,6 @@
 
 # Strats. Strava statistics page
-
+VPN required for russian users!
 
 ## About
 Strats a website for monitoring a person's strava activities. Made for analyzing cycling and running information. Uses Strava API, JavaScript and Chart.JS.<br>
